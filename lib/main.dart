@@ -15,7 +15,6 @@ class FitnessApp extends StatefulWidget {
 class _FitnessAppState extends State<FitnessApp> {
   int _index = 0;
 
-  // pages in bottom nav order: progress, workout, calories
   final List<Widget> _pages = [
     ProgressScreen(),
     WorkoutLogScreen(),
@@ -26,20 +25,17 @@ class _FitnessAppState extends State<FitnessApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'fitness tracker',
+      title: 'Fitness Tracker',
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.pink[300],
           title: Text(
             _index == 0
-                ? 'progress tracker'
+                ? 'Progress Tracker'
                 : _index == 1
-                    ? 'workout log'
-                    : 'calorie tracker',
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+                    ? 'Workout Log'
+                    : 'Calorie Tracker',
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -49,18 +45,9 @@ class _FitnessAppState extends State<FitnessApp> {
           onTap: (i) => setState(() => _index = i),
           selectedItemColor: Colors.pink[400],
           items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart),
-              label: 'progress',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.fitness_center),
-              label: 'workout',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.local_dining),
-              label: 'calories',
-            ),
+            BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Progress'),
+            BottomNavigationBarItem(icon: Icon(Icons.fitness_center), label: 'Workout'),
+            BottomNavigationBarItem(icon: Icon(Icons.local_dining), label: 'Calories'),
           ],
         ),
       ),

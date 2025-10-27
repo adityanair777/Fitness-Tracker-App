@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../data/db_helper.dart';
 
 class WorkoutLogScreen extends StatefulWidget {
   @override
@@ -10,24 +11,36 @@ class _WorkoutLogScreenState extends State<WorkoutLogScreen> {
   final durCtrl = TextEditingController();
   final repCtrl = TextEditingController();
 
-  // temp list for milestone 1
-  final List<Map<String, String>> _list = [];
+  List<Map<String, dynamic>> _rows = [];
 
-  void addWorkout() {
-    if (exCtrl.text.isEmpty) return;
-    setState(() {
-      _list.add({
-        'exercise': exCtrl.text,
-        'duration': durCtrl.text,
-        'reps': repCtrl.text,
-      });
-      exCtrl.clear();
-      durCtrl.clear();
-      repCtrl.clear();
-    });
+  @override
+  void initState() {
+    super.initState();
+    _load();
   }
 
-  void remove(int i) => setState(() => _list.removeAt(i));
+  Future<void> _load() async {
+    final data = await DBHelper.all(DBHelper.workoutTable);
+    setState(() => _rows = data);
+  }
+
+  Future<void> _add() async {
+    if (exCtrl.text.isEmpty) return;
+    await DBHelper.insert(DBHelper.workoutTable, {
+      'exercise': exCtrl.text,
+      'duration': durCtrl.text,
+      'reps': repCtrl.text,
+    });
+    exCtrl.clear();
+    durCtrl.clear();
+    repCtrl.clear();
+    await _load();
+  }
+
+  Future<void> _remove(int id) async {
+    await DBHelper.delete(DBHelper.workoutTable, id);
+    await _load();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,41 +49,28 @@ class _WorkoutLogScreenState extends State<WorkoutLogScreen> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          TextField(
-            controller: exCtrl,
-            decoration: const InputDecoration(labelText: 'exercise type'),
-          ),
-          TextField(
-            controller: durCtrl,
-            decoration: const InputDecoration(labelText: 'duration (mins)'),
-            keyboardType: TextInputType.number,
-          ),
-          TextField(
-            controller: repCtrl,
-            decoration: const InputDecoration(labelText: 'repetitions'),
-            keyboardType: TextInputType.number,
-          ),
+          TextField(controller: exCtrl, decoration: const InputDecoration(labelText: 'Exercise Type')),
+          TextField(controller: durCtrl, decoration: const InputDecoration(labelText: 'Duration (mins)'), keyboardType: TextInputType.number),
+          TextField(controller: repCtrl, decoration: const InputDecoration(labelText: 'Repetitions'), keyboardType: TextInputType.number),
           const SizedBox(height: 10),
           ElevatedButton(
-            onPressed: addWorkout,
+            onPressed: _add,
             style: ElevatedButton.styleFrom(backgroundColor: Colors.pink[300]),
-            child: const Text('add workout'),
+            child: const Text('Add Workout'),
           ),
           const SizedBox(height: 15),
           Expanded(
             child: ListView.builder(
-              itemCount: _list.length,
+              itemCount: _rows.length,
               itemBuilder: (c, i) {
-                final item = _list[i];
+                final it = _rows[i];
                 return Card(
                   child: ListTile(
-                    title: Text(item['exercise'] ?? ''),
-                    subtitle: Text(
-                      'duration: ${item['duration']} mins | reps: ${item['reps']}',
-                    ),
+                    title: Text(it['exercise'] ?? ''),
+                    subtitle: Text('Duration: ${it['duration']} mins | Reps: ${it['reps']}'),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () => remove(i),
+                      onPressed: () => _remove(it['id'] as int),
                     ),
                   ),
                 );
