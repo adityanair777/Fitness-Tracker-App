@@ -10,7 +10,6 @@ class _WorkoutLogScreenState extends State<WorkoutLogScreen> {
   final exCtrl = TextEditingController();
   final durCtrl = TextEditingController();
   final repCtrl = TextEditingController();
-
   List<Map<String, dynamic>> _rows = [];
 
   @override
@@ -26,10 +25,12 @@ class _WorkoutLogScreenState extends State<WorkoutLogScreen> {
 
   Future<void> _add() async {
     if (exCtrl.text.isEmpty) return;
+    final dateString = DateTime.now().toIso8601String();
     await DBHelper.insert(DBHelper.workoutTable, {
       'exercise': exCtrl.text,
       'duration': durCtrl.text,
       'reps': repCtrl.text,
+      'date': dateString,
     });
     exCtrl.clear();
     durCtrl.clear();
@@ -50,8 +51,8 @@ class _WorkoutLogScreenState extends State<WorkoutLogScreen> {
       child: Column(
         children: [
           TextField(controller: exCtrl, decoration: const InputDecoration(labelText: 'Exercise Type')),
-          TextField(controller: durCtrl, decoration: const InputDecoration(labelText: 'Duration (mins)'), keyboardType: TextInputType.number),
-          TextField(controller: repCtrl, decoration: const InputDecoration(labelText: 'Repetitions'), keyboardType: TextInputType.number),
+          TextField(controller: durCtrl, decoration: const InputDecoration(labelText: 'Duration (mins)')),
+          TextField(controller: repCtrl, decoration: const InputDecoration(labelText: 'Repetitions')),
           const SizedBox(height: 10),
           ElevatedButton(
             onPressed: _add,

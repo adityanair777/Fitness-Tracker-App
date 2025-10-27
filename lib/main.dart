@@ -1,9 +1,24 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 import 'screens/progress_screen.dart';
 import 'screens/workout_log_screen.dart';
 import 'screens/calorie_tracker_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  if (kIsWeb) {
+    databaseFactory = databaseFactoryFfiWeb;
+    print("Using Web Database Factory");
+  } else if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+    print("Using Desktop Database Factory");
+  }
+
   runApp(FitnessApp());
 }
 
@@ -35,7 +50,10 @@ class _FitnessAppState extends State<FitnessApp> {
                 : _index == 1
                     ? 'Workout Log'
                     : 'Calorie Tracker',
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           centerTitle: true,
         ),

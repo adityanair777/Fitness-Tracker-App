@@ -1,5 +1,5 @@
 name: fitness_tracker
-description: fitness tracker app
+description: fitness tracker app milestone 1 + 2
 publish_to: "none"
 
 environment:
@@ -10,7 +10,10 @@ dependencies:
     sdk: flutter
   fl_chart: ^0.66.2
   sqflite: ^2.3.0
+  sqflite_common_ffi: ^2.3.2
+  sqflite_common_ffi_web: ^0.4.2
   path: ^1.8.3
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
@@ -18,4 +21,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  

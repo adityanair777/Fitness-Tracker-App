@@ -9,7 +9,6 @@ class CalorieTrackerScreen extends StatefulWidget {
 class _CalorieTrackerScreenState extends State<CalorieTrackerScreen> {
   final foodCtrl = TextEditingController();
   final calCtrl = TextEditingController();
-
   List<Map<String, dynamic>> _meals = [];
 
   @override
@@ -58,7 +57,7 @@ class _CalorieTrackerScreenState extends State<CalorieTrackerScreen> {
           ),
           const SizedBox(height: 10),
           TextField(controller: foodCtrl, decoration: const InputDecoration(labelText: 'Meal Name')),
-          TextField(controller: calCtrl, decoration: const InputDecoration(labelText: 'Calories'), keyboardType: TextInputType.number),
+          TextField(controller: calCtrl, decoration: const InputDecoration(labelText: 'Calories')),
           const SizedBox(height: 10),
           ElevatedButton(
             onPressed: _add,
