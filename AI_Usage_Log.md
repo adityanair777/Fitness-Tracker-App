@@ -1,0 +1,2 @@
+We did not use much AI, the only form of AI that was used was to fix problems with flutter and dart itself or visual studio code, for example I used Grok to tell me why I couldn't run my project in the OneDrive as it was coming into an error with it, what I learned was 
+to keep the directory in another file location in my explorer so one drive couldn't manipulate it and keep certain files still running preventing me from running and testing anything.
